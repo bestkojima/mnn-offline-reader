@@ -1,0 +1,71 @@
+{
+  "version": "kokoro-v1.0",
+  "revision": "c161c9db569b944c35e06f5c3042e4c575aee4a9",
+  "model_repo": "wangjazz/kokoro-82m-mnn",
+  "frontend_repo": "csukuangfj/kokoro-multi-lang-v1_0",
+  "frontend_revision": "f7b96bb6bef5c5da4d3aa4f4e0498fbbf62dc78b",
+  "voices_repo": "onnx-community/Kokoro-82M-v1.0-ONNX",
+  "voices_revision": "1939ad2a8e416c0acfeecc08a694d14ef25f2231",
+  "model_license_url": "https://huggingface.co/hexgrad/Kokoro-82M",
+  "sample_rate": 24000,
+  "styles": [
+    "zf_xiaoxiao",
+    "zm_yunxi"
+  ],
+  "files": [
+    {
+      "source": "tts.mnn",
+      "path": "tts.mnn",
+      "bytes": 100515712,
+      "sha256": "763b51ae426cc5020fb55072d415591100dcc057ed4acb2d8efcba9ae3b5b6c6"
+    },
+    {
+      "source": "tokenizer.txt",
+      "path": "tokenizer.txt",
+      "bytes": 655,
+      "sha256": "b6e80c7017603809ccd122f05ec49b35e47bc31da4a1468343699a666e368f02"
+    },
+    {
+      "source": "tts_config.json",
+      "path": "upstream-tts-config.json",
+      "bytes": 1156,
+      "sha256": "6dda828eca8b414202846bab1edbb3b53a892146706b413a2c4f32a362dc821c"
+    },
+    {
+      "source": "frontend/lexicon-zh.txt",
+      "path": "lexicon-zh.txt",
+      "bytes": 2365182,
+      "sha256": "902bc2d20ac7c449c5ecbbbb23c89d12119c03ed5b8ed27f114f0260c9e35229"
+    },
+    {
+      "source": "frontend/lexicon-us-en.txt",
+      "path": "lexicon-us-en.txt",
+      "bytes": 5956885,
+      "sha256": "7daaab53a181be9885b853a8582bf1838186317e5dadacbcef9c426d6fa0da14"
+    },
+    {
+      "source": "frontend/LICENSE",
+      "path": "FRONTEND-LICENSE",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "source": "frontend/LICENSE",
+      "path": "MODEL-LICENSE",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "source": "voices-source/voices/zf_xiaoxiao.bin",
+      "path": "voices/zf_xiaoxiao.bin",
+      "bytes": 522240,
+      "sha256": "03adb5d5e3ddd88b047954e974e651cb0a4b524c985057e5d872e962c7be1169"
+    },
+    {
+      "source": "voices-source/voices/zm_yunxi.bin",
+      "path": "voices/zm_yunxi.bin",
+      "bytes": 522240,
+      "sha256": "7243892fb4e560d47014090ddf010f8b8b790f3c6b029ff82b2ac06aa4e27c8b"
+    }
+  ]
+}

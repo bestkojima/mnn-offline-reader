@@ -1,0 +1,11 @@
+pluginManagement { repositories { google(); mavenCentral(); gradlePluginPortal() } }
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        def readerMirror = System.getenv('MNN_MAVEN_MIRROR')
+        if (readerMirror) maven { url = uri(readerMirror) }
+        google(); mavenCentral()
+    }
+}
+rootProject.name = 'MnnEnglishReader'
+include ':app'

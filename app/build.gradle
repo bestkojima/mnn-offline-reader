@@ -1,0 +1,46 @@
+plugins { id 'com.android.application' }
+android {
+    namespace 'com.alibaba.mnn.english'
+    compileSdk 35
+    ndkVersion '28.1.13356709'
+    defaultConfig {
+        applicationId 'com.alibaba.mnn.english'
+        minSdk 23
+        targetSdk 35
+        versionCode 2
+        versionName '0.2.0'
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        ndk { abiFilters 'arm64-v8a' }
+        externalNativeBuild {
+            cmake {
+                arguments '-DANDROID_STL=c++_shared', '-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON'
+                if (project.hasProperty('mnnRoot')) arguments "-DMNN_ROOT=${file(project.property('mnnRoot')).absolutePath}"
+            }
+        }
+    }
+    externalNativeBuild { cmake { path 'src/main/cpp/CMakeLists.txt'; version '3.31.6' } }
+    compileOptions { sourceCompatibility JavaVersion.VERSION_1_8; targetCompatibility JavaVersion.VERSION_1_8 }
+    buildTypes { release { minifyEnabled false } }
+    androidResources { noCompress += ['mnn', 'db'] }
+}
+dependencies {
+    implementation 'com.google.mlkit:language-id:17.0.6'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test:runner:1.6.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
+}
+tasks.register('checkAppAssets') {
+    doLast {
+        for (name in ['dictionary.db', 'dictionary-manifest.json', 'model-catalog.json', 'licenses/SUPERTONIC-LICENSE', 'licenses/KOKORO-LICENSE']) {
+            if (!file("src/main/assets/$name").isFile()) {
+                throw new GradleException("Missing $name. Run the preparation commands in README.md first.")
+            }
+        }
+        file('src/main/assets').eachFileRecurse { artifact ->
+            if (artifact.isFile() && (artifact.name.endsWith('.part') || artifact.name.endsWith('.mnn') || artifact.name.endsWith('.bin'))) {
+                throw new GradleException("Model or unfinished file must not be bundled: $artifact")
+            }
+        }
+    }
+}
+tasks.named('preBuild').configure { dependsOn 'checkAppAssets' }

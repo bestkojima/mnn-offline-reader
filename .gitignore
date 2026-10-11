@@ -1,0 +1,19 @@
+.gradle/
+.cxx/
+**/build/
+local.properties
+models/
+*.keystore
+*.jks
+*.p12
+.env
+.env.*
+app/src/main/assets/supertonic/
+app/src/main/assets/kokoro/
+app/src/main/assets/dictionary.db
+app/src/main/assets/dictionary-manifest.json
+
+# Also exclude build paths when they are temporary symlinks.
+/app/build
+/app/.cxx
+/build

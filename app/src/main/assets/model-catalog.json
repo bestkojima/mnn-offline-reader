@@ -1,0 +1,170 @@
+{
+  "packs": [
+    {
+      "repository": "yunfengwang/supertonic-tts-mnn",
+      "revision": "c0425ea0b5884cdb9c23a99b2373dcdb47f142fa",
+      "version": "v3",
+      "precision": "int8",
+      "files": [
+        {
+          "path": "mnn_models/int8/duration_predictor.mnn",
+          "bytes": 2682596,
+          "sha256": "a3178a72cdc95e1f5584fedb5e4f8507d0ad65036237f4082a7073636625f130"
+        },
+        {
+          "path": "mnn_models/int8/text_encoder.mnn",
+          "bytes": 15907604,
+          "sha256": "2b57b1f902821b73d28168771786c01f0df164b9c137b87da5c55299d2164975"
+        },
+        {
+          "path": "mnn_models/int8/vector_estimator.mnn",
+          "bytes": 65770972,
+          "sha256": "61fdfab87e394532f384d171d3fb4c4ea5ecb5fadce6a146922a6b8472efe9eb"
+        },
+        {
+          "path": "mnn_models/int8/vocoder.mnn",
+          "bytes": 25805752,
+          "sha256": "acfbc34038f8f9776e5a7efc83cd502e6764cc133177ee2618198c9c469a445d"
+        },
+        {
+          "path": "mnn_models/tts.json",
+          "bytes": 8253,
+          "sha256": "42078d3aef1cd43ab43021f3c54f47d2d75ceb4e75f627f118890128b06a0d09"
+        },
+        {
+          "path": "mnn_models/unicode_indexer.json",
+          "bytes": 277676,
+          "sha256": "9bf7346e43883a81f8645c81224f786d43c5b57f3641f6e7671a7d6c493cb24f"
+        },
+        {
+          "path": "voice_styles/F1.json",
+          "bytes": 292046,
+          "sha256": "bbdec6ee00231c2c742ad05483df5334cab3b52fda3ba38e6a07059c4563dbc2"
+        },
+        {
+          "path": "voice_styles/F2.json",
+          "bytes": 292423,
+          "sha256": "7c722c6a72707b1a77f035d67f0d1351ba187738e06f7683e8c72b1df3477fc6"
+        },
+        {
+          "path": "voice_styles/F3.json",
+          "bytes": 290794,
+          "sha256": "12f6ef2573baa2defa1128069cb59f203e3ab67c92af77b42df8a0e3a2f7c6ab"
+        },
+        {
+          "path": "voice_styles/F4.json",
+          "bytes": 291808,
+          "sha256": "c2fa764c1225a76dfc3e2c73e8aa4f70d9ee48793860eb34c295fff01c2e032b"
+        },
+        {
+          "path": "voice_styles/F5.json",
+          "bytes": 291479,
+          "sha256": "45966e73316415626cf41a7d1c6f3b4c70dbc1ba2bee5c1978ef0ce33244fc8d"
+        },
+        {
+          "path": "voice_styles/M1.json",
+          "bytes": 291748,
+          "sha256": "e35604687f5d23694b8e91593a93eec0e4eca6c0b02bb8ed69139ab2ea6b0a5b"
+        },
+        {
+          "path": "voice_styles/M2.json",
+          "bytes": 292055,
+          "sha256": "b76cbf62bac707c710cf0ae5aba5e31eea1a6339a9734bfae33ab98499534a50"
+        },
+        {
+          "path": "voice_styles/M3.json",
+          "bytes": 290198,
+          "sha256": "ea1ac35ccb91b0d7ecad533a2fbd0eec10c91513d8951e3b25fbba99954e159b"
+        },
+        {
+          "path": "voice_styles/M4.json",
+          "bytes": 291522,
+          "sha256": "ca8eefad4fcd989c9379032ff3e50738adc547eeb5e221b82593a6d7b3bac303"
+        },
+        {
+          "path": "voice_styles/M5.json",
+          "bytes": 291469,
+          "sha256": "dd22b92740314321f8ae11c5e87f8dd60d060f15dd3a632b5adf77f471f77af2"
+        },
+        {
+          "path": "LICENSE",
+          "bytes": 15007,
+          "sha256": "0d944a9110fed9a9602d60e0423a272903e7bd21ab060490774efc77c2275e9f"
+        }
+      ],
+      "id": "supertonic",
+      "name": "英语及其他语言语音",
+      "modelscope_repository": "dr3334/Supertonic-3-INT8-MNN",
+      "modelscope_revision": "1dfd5693db1b62b2c49331b7674f9dee5c69385a",
+      "directory": "supertonic-c0425ea0b5884cdb9c23a99b2373dcdb47f142fa"
+    },
+    {
+      "version": "kokoro-v1.0",
+      "revision": "c161c9db569b944c35e06f5c3042e4c575aee4a9",
+      "model_repo": "wangjazz/kokoro-82m-mnn",
+      "frontend_repo": "csukuangfj/kokoro-multi-lang-v1_0",
+      "frontend_revision": "f7b96bb6bef5c5da4d3aa4f4e0498fbbf62dc78b",
+      "voices_repo": "onnx-community/Kokoro-82M-v1.0-ONNX",
+      "voices_revision": "1939ad2a8e416c0acfeecc08a694d14ef25f2231",
+      "model_license_url": "https://huggingface.co/hexgrad/Kokoro-82M",
+      "sample_rate": 24000,
+      "styles": [
+        "zf_xiaoxiao",
+        "zm_yunxi"
+      ],
+      "files": [
+        {
+          "path": "tts.mnn",
+          "bytes": 100515712,
+          "sha256": "763b51ae426cc5020fb55072d415591100dcc057ed4acb2d8efcba9ae3b5b6c6"
+        },
+        {
+          "path": "tokenizer.txt",
+          "bytes": 655,
+          "sha256": "b6e80c7017603809ccd122f05ec49b35e47bc31da4a1468343699a666e368f02"
+        },
+        {
+          "path": "upstream-tts-config.json",
+          "bytes": 1156,
+          "sha256": "6dda828eca8b414202846bab1edbb3b53a892146706b413a2c4f32a362dc821c"
+        },
+        {
+          "path": "lexicon-zh.txt",
+          "bytes": 2365182,
+          "sha256": "902bc2d20ac7c449c5ecbbbb23c89d12119c03ed5b8ed27f114f0260c9e35229"
+        },
+        {
+          "path": "lexicon-us-en.txt",
+          "bytes": 5956885,
+          "sha256": "7daaab53a181be9885b853a8582bf1838186317e5dadacbcef9c426d6fa0da14"
+        },
+        {
+          "path": "FRONTEND-LICENSE",
+          "bytes": 11358,
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+        },
+        {
+          "path": "MODEL-LICENSE",
+          "bytes": 11358,
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+        },
+        {
+          "path": "voices/zf_xiaoxiao.bin",
+          "bytes": 522240,
+          "sha256": "03adb5d5e3ddd88b047954e974e651cb0a4b524c985057e5d872e962c7be1169"
+        },
+        {
+          "path": "voices/zm_yunxi.bin",
+          "bytes": 522240,
+          "sha256": "7243892fb4e560d47014090ddf010f8b8b790f3c6b029ff82b2ac06aa4e27c8b"
+        }
+      ],
+      "package_sha256": "dfcc374ae5eb511fe543f25f0880ebac34efcbee5be346c4253ee142ea2767f6",
+      "id": "kokoro",
+      "name": "中文语音",
+      "modelscope_repository": "dr3334/Kokoro-82M-v1.0-MNN",
+      "modelscope_revision": "e7f9c985f3118427cb6646b9962ee4b91c536b0f",
+      "directory": "kokoro-dfcc374ae5eb511fe543f25f0880ebac34efcbee5be346c4253ee142ea2767f6"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">离线发音</string>
+    <string name="pronounce_entry">发音</string>
+    <string name="language_manual">手动指定：%1$s</string>
+    <string name="language_detected">检测到：%1$s；可手动更改</string>
+    <string name="sample_word" translatable="false">curious</string>
+</resources>

@@ -1,0 +1,55 @@
+MNN English Reader
+
+Inference runtime: Alibaba MNN, Apache-2.0. https://github.com/alibaba/MNN
+Model: Supertonic 3, converted MNN int8 assets by yunfengwang.
+Pinned model revision: c0425ea0b5884cdb9c23a99b2373dcdb47f142fa.
+Model license: OpenRAIL; full notice packaged at licenses/SUPERTONIC-LICENSE.
+https://huggingface.co/Supertone/supertonic-3
+https://huggingface.co/yunfengwang/supertonic-tts-mnn
+
+Dictionary: ECDICT, revision bc015ed2e24a7abef49fc6dbbb7fe32c1dadaf8b.
+https://github.com/skywind3000/ECDICT
+The source repository provides the following notice:
+
+MIT License
+Copyright (c) 2025 Linwei
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+Examples: authored for this project, 12 words / 24 bilingual examples.
+The first build does not provide example coverage for every dictionary entry.
+Inference and preprocessing were checked against the publisher's model contract
+and the community reference at https://github.com/vra/supertonic-mnn .
+
+Language identification: Google ML Kit bundled language-id 17.0.6.
+Model is packaged locally; no Play Services model download.
+SDK terms and privacy: https://developers.google.com/ml-kit/terms
+API documentation: https://developers.google.com/ml-kit/language/identification/android
+The application uses INTERNET and ACCESS_NETWORK_STATE for explicitly started ModelScope downloads.
+Language detection and speech inference run on device; selected text is not sent in model requests.
+
+Mandarin TTS: Kokoro-82M v1.0 (Apache-2.0).
+Original model: https://huggingface.co/hexgrad/Kokoro-82M
+MNN conversion: wangjazz/kokoro-82m-mnn, c161c9db569b944c35e06f5c3042e4c575aee4a9.
+Phoneme lexicons: csukuangfj/kokoro-multi-lang-v1_0, f7b96bb6bef5c5da4d3aa4f4e0498fbbf62dc78b.
+Voice data: onnx-community/Kokoro-82M-v1.0-ONNX, 1939ad2a8e416c0acfeecc08a694d14ef25f2231.
+Selected voices: zf_xiaoxiao, zm_yunxi. No other Kokoro voices are packaged.
+Full Apache-2.0 notices are packaged at licenses/KOKORO-LICENSE.
+The application implements lexicon-based Chinese preprocessing; it does not embed the sherpa-onnx runtime or eSpeak.
+
+TTS weights, lexicons and voice data are downloaded from fixed ModelScope revisions, not bundled in the APK.
+https://modelscope.cn/models/dr3334/Supertonic-3-INT8-MNN
+https://modelscope.cn/models/dr3334/Kokoro-82M-v1.0-MNN

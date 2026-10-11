@@ -1,0 +1,17 @@
+{
+  "date": "2026-10-12",
+  "apk_bytes": 18241712,
+  "apk_sha256": "6ef3224f270576316c96e3e57ed670e6557b7b5e6b5c1701b18bbaae7757db27",
+  "bundled_tts_model_files": 0,
+  "junit_passed": 29,
+  "python_tests_passed": 4,
+  "lint": "no issues",
+  "signature": "verified",
+  "zip_alignment": "16 KB verified",
+  "native_alignment": "all three ELF libraries 16 KB",
+  "modelscope_download_files": 26,
+  "modelscope_download_bytes": 223290188,
+  "modelscope_download_smoke": "actual production Java downloader; real transfer paused then resumed with a new instance; every final size and SHA-256 verified",
+  "android_device": "not connected; device downloads/UI/JNI/playback not executed",
+  "runtime_optimization": "MNN from source; -O3 -DNDEBUG unchanged"
+}
