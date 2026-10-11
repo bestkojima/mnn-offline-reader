@@ -113,15 +113,94 @@ GitHub Actions 提供手动构建工作流：初始化 MNN、生成词库并运�
 
 ## 项目结构
 
+这是一个独立的 Android App 仓库。Java 负责界面、查词、下载与播放调度，C++ 负责调用 MNN 合成语音，Python 脚本负责构建词库和准备发布资源。MNN 推理引擎通过固定版本的 Git 子模块引入。
+
 ```text
-app/src/main/java/     卡片、查词、语言检测、下载和播放调度
-app/src/main/cpp/      Supertonic / Kokoro 引擎及 JNI
-app/src/main/assets/   下载清单、许可；构建时生成英语词库
-data/                 上游资源锁文件、精选例句、ModelScope 发布记录
-scripts/              词库构建、资源验证和维护者发布工具
-vendor/MNN/           固定版本 MNN 子模块
-docs/                 设计、中文模型候选与研究记录
+app/
+├── build.gradle                         Android 依赖、构建设置与资源检查
+└── src/
+    ├── main/
+    │   ├── AndroidManifest.xml           权限、应用入口和跨应用选字/分享入口
+    │   ├── java/com/alibaba/mnn/english/  界面、SQLite、下载、语言识别和语音调度
+    │   ├── cpp/                          JNI 桥接与两套 MNN TTS 引擎
+    │   ├── assets/                       模型下载清单、许可及生成的英语数据库
+    │   └── res/                          界面文字、主题和备份规则
+    ├── test/                             Java 单元测试与开发机验证工具
+    └── androidTest/                      需要 Android 设备的集成测试
+data/                                    原始精选例句、资源版本锁与上传记录
+scripts/                                 词库生成、模型资源准备及 ModelScope 发布工具
+vendor/MNN/                              固定版本 MNN 源码子模块
+docs/                                    设计、调研、验证记录与下一阶段计划
+gradle/wrapper/                          固定 Gradle 版本的 Wrapper
+.github/workflows/android.yml            手动触发的构建工作流
+models/                                  本机下载/整理的资源，生成后存在，不提交 Git
 ```
+
+### 主要代码各自负责什么
+
+以下 Java 文件都位于 `app/src/main/java/com/alibaba/mnn/english/`。界面通过 Java 代码创建，因此卡片布局主要看 Activity 与 `Ui.java`，不是查找布局 XML。
+
+| 文件 | 职责 |
+| --- | --- |
+| [MainActivity.java](app/src/main/java/com/alibaba/mnn/english/MainActivity.java) | 安装后打开的首页，提供下载入口、生词本及使用说明 |
+| [PronounceActivity.java](app/src/main/java/com/alibaba/mnn/english/PronounceActivity.java) | 接收其他 App 选中/分享的文字，显示居中卡片，连接查词、语言选择与朗读操作 |
+| [Ui.java](app/src/main/java/com/alibaba/mnn/english/Ui.java) | 创建文字、按钮、卡片、滚动区域及共用样式 |
+| [ReaderApplication.java](app/src/main/java/com/alibaba/mnn/english/ReaderApplication.java) | 创建共享的查词、下载、语言识别和语音对象，管理数据库工作线程及后台内存释放 |
+| [DictionaryStore.java](app/src/main/java/com/alibaba/mnn/english/DictionaryStore.java) | 只读 SQLite 查询：单词/词形 → 音标、释义、关联例句 |
+| [LearningStore.java](app/src/main/java/com/alibaba/mnn/english/LearningStore.java) | 独立 `user.db`，保存生词本与最近查询，避免修改发布词库 |
+| [LanguageDetector.java](app/src/main/java/com/alibaba/mnn/english/LanguageDetector.java) / [TtsLanguages.java](app/src/main/java/com/alibaba/mnn/english/TtsLanguages.java) | 本地识别语言、处理手动选择，并定义支持的语言与显示名称 |
+| [SpeechController.java](app/src/main/java/com/alibaba/mnn/english/SpeechController.java) | 调度合成与 AudioTrack 播放，处理停止、新请求替换、PCM 缓存和音频焦点 |
+| [TextNormalizer.java](app/src/main/java/com/alibaba/mnn/english/TextNormalizer.java) | Supertonic 文本规范化、当前分块规则及 `<en>…</en>` 等语言标记 |
+| [KokoroFrontend.java](app/src/main/java/com/alibaba/mnn/english/KokoroFrontend.java) | 中文和词典支持的中英混排前处理，将文本转成 Kokoro 所需音素 ID |
+| [ModelAssets.java](app/src/main/java/com/alibaba/mnn/english/ModelAssets.java) | 安装内置词库副本，读取已下载模型的配置、音色与前处理资源，提供引擎创建参数 |
+| [ModelDownloadActivity.java](app/src/main/java/com/alibaba/mnn/english/ModelDownloadActivity.java) | 模型下载页面，展示状态、进度及暂停/继续按钮 |
+| [ModelDownloads.java](app/src/main/java/com/alibaba/mnn/english/ModelDownloads.java) / [ResumableDownloader.java](app/src/main/java/com/alibaba/mnn/english/ResumableDownloader.java) | 前者协调模型包和下载状态；后者执行断点下载、响应检查、大小/SHA-256 校验及完成文件替换 |
+| [SupertonicNative.java](app/src/main/java/com/alibaba/mnn/english/SupertonicNative.java) / [KokoroNative.java](app/src/main/java/com/alibaba/mnn/english/KokoroNative.java) | Java 到 C++ 的 JNI 接口，提供引擎创建、合成、取消和销毁 |
+
+C++ 的 [reader_jni.cpp](app/src/main/cpp/reader_jni.cpp) 接收 Java 请求；[supertonic_engine.cpp](app/src/main/cpp/supertonic_engine.cpp) 与 [kokoro_engine.cpp](app/src/main/cpp/kokoro_engine.cpp) 分别加载和运行对应的 MNN 模型，返回 PCM 音频。[CMakeLists.txt](app/src/main/cpp/CMakeLists.txt) 管理原生编译和 MNN 链接；`smoke_main.cpp` 与 `kokoro_smoke.cpp` 是开发机合成验证入口。
+
+### 一次选字朗读如何经过这些模块
+
+```mermaid
+flowchart TD
+    Source[其他 App 选中文字或分享文本] --> Card[PronounceActivity 居中卡片]
+    Card --> Dict[DictionaryStore 查询 SQLite]
+    Dict --> Result[卡片显示音标、释义和已有例句]
+    Card --> Speech[SpeechController 朗读调度]
+    Speech --> Lang[语言判断与对应文本前处理]
+    Lang --> JNI[Java Native 接口 / reader_jni.cpp]
+    JNI --> Engine[Supertonic 或 Kokoro MNN 引擎]
+    Engine --> PCM[PCM 音频]
+    PCM --> Audio[SpeechController / AudioTrack 播放]
+```
+
+查词与语音是两个流程：查词直接读本地 SQLite；朗读先通过 `ModelAssets` / `ModelDownloads` 确认对应语音资源可用，再进行前处理和 JNI 合成。缺少模型时提示下载，已有词库仍可查询。查询与磁盘操作放在工作线程，界面更新回到主线程。
+
+模型下载另走 `ModelDownloadActivity → ModelDownloads → ResumableDownloader → ModelScope`。下载按 `assets/model-catalog.json` 中固定的 revision、文件路径、大小和 SHA-256 执行，未完成文件保留为 `.part`；完整校验成功后才供 `ModelAssets` 加载。
+
+**上述是当前版本的关系。** 现在 `SpeechController` 仍然按块依次“合成 → 播放完 → 合成下一块”。下一阶段的并行预合成、连续播放器，以及题干/ABCD 结构识别见 [长文朗读计划](docs/LONG_TEXT_READING_PLAN.md)，尚未接入当前 Release。
+
+### 词库、模型和个人数据放在哪里
+
+| 数据 | 构建/运行方式 |
+| --- | --- |
+| 英语词库 | `scripts/prepare_assets.sh` 获取固定 ECDICT CSV，再由 `build_dictionary.py` 生成 `assets/dictionary.db` 与校验清单；数据库随 APK 提供，运行时复制到应用内部目录并只读查询 |
+| 双语例句 | 当前来源为 `data/examples.json`，构建时导入同一个 SQLite 的 `examples` 表，按词条关联；目前仍只有 12 个词的 24 条例句 |
+| TTS 模型、音色和中文前处理词典 | 按下载清单从 ModelScope 获取，存到应用内部目录；权重不进入 APK，也不进入 Git |
+| 生词本与历史 | 运行时写入应用内部的 `user.db`，与只读英语词库分开 |
+| 语言识别资源 | 由 ML Kit 随安装包提供，在本地运行 |
+
+`data/model-lock.json` 与 `data/kokoro-lock.json` 记录上游资源版本；`data/modelscope-release.json` 记录上传结果；`assets/model-catalog.json` 是 App 实际使用的下载清单。它们是元数据，不是模型权重。
+
+普通构建只需要准备词库。`prepare_models.py`、`prepare_kokoro.sh` / `prepare_kokoro.py` 用于维护者整理固定语音资源，`stage_modelscope_release.py` 生成发布目录，`upload_modelscope.py` 上传并生成固定下载清单；这组维护脚本不在手机中运行。
+
+### 建议的阅读顺序
+
+1. 看 [AndroidManifest.xml](app/src/main/AndroidManifest.xml) 和 `PronounceActivity.java`，理解跨应用入口与卡片操作。
+2. 看 `DictionaryStore.java`、`LearningStore.java`，理解词库查询和个人数据保存。
+3. 看 `SpeechController.java`，再沿 `ModelAssets.java → 文本前处理 → Native 接口 → reader_jni.cpp → 对应引擎` 理解离线合成与播放。
+4. 看 `ModelDownloads.java`、`ResumableDownloader.java` 和 `model-catalog.json`，理解模型如何下载、校验和载入。
+5. 需要修改资源或理解后续方向时，再看 `scripts/`、版本锁文件和 `docs/`。
 
 ## 来源与许可
 
