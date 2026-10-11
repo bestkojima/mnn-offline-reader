@@ -17,3 +17,6 @@ app/src/main/assets/dictionary-manifest.json
 /app/build
 /app/.cxx
 /build
+
+__pycache__/
+*.py[cod]
